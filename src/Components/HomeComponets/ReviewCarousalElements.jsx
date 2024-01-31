@@ -1,16 +1,11 @@
 import React from 'react';
-import {
-  Box,
-  IconButton,
-} from '@chakra-ui/react';
-
+import { Box, IconButton } from '@chakra-ui/react';
 import Slider from 'react-slick';
-import { BsArrowLeftShort } from "react-icons/bs";
-import { BsArrowRightShort } from "react-icons/bs";
+import { BsArrowLeftShort, BsArrowRightShort } from 'react-icons/bs';
+import { reviewData } from '../../Media/reviews';
+import ReviewCarouselCard from './ReviewCarousalCard';
 
 // Settings for the slider
-import {reviewData} from "../../Media/reviews"
-import ReviewCarouselCard from './ReviewCarousalCard';
 const settings = {
   dots: false,
   arrows: false,
@@ -24,19 +19,17 @@ const settings = {
 };
 
 export default function ReviewCarouselElements() {
-
-  const [slider, setSlider] = React.useState()
+  const [slider, setSlider] = React.useState();
 
   return (
     <Box
-      
-      height={'265px'}
-    //   border="1px solid black"
+      height={['auto', '265px']}
       padding="10px"
-      width={'full'}
-      overflow={'hidden'}
+      width="100%"
+      overflow="hidden"
       borderRadius="0"
-        zIndex="0">
+      zIndex="0"
+    >
       {/* CSS files for react-slick */}
       <link
         rel="stylesheet"
@@ -53,42 +46,54 @@ export default function ReviewCarouselElements() {
       <IconButton
         aria-label="left-arrow"
         variant="ghost"
-        position="absolute"
-        left={1220}
-        top={10}
+        position={['absolute', 'absolute']}
+        left={[0, 1220]}
+        top={[10, 10]}
         transform={'translate(0%, -50%)'}
         zIndex={2}
         color="#5a6369"
         borderRadius="md"
-        h="35px"
+        height="35px"
         transition="all 0.4s ease"
-        _hover={{ bg:"white",transition:"all 0.4s ease", boxShadow:"rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.12) 0px 2px 16px 0px"}}
+        _hover={{
+          bg: 'white',
+          transition: 'all 0.4s ease',
+          boxShadow:
+            'rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.12) 0px 2px 16px 0px',
+        }}
         _active={{}}
-        onClick={() => slider?.slickPrev()}>
+        onClick={() => slider?.slickPrev()}
+      >
         <BsArrowLeftShort fontSize="35px" />
       </IconButton>
       {/* Right Icon */}
       <IconButton
         aria-label="right-arrow"
         variant="ghost"
-        position="absolute"
+        position={['absolute', 'absolute']}
         borderRadius="md"
         transition="all 0.4s ease"
-        right={2}
-        top={10}
+        right={[0, 2]}
+        top={[10, 10]}
         transform={'translate(0%, -50%)'}
         zIndex={2}
         color="#5c656b"
-        h="35px"
-        _hover={{ bg:"white",transition:"all 0.4s ease", boxShadow:"rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.12) 0px 2px 16px 0px"}}
+        height="35px"
+        _hover={{
+          bg: 'white',
+          transition: 'all 0.4s ease',
+          boxShadow:
+            'rgba(14, 30, 37, 0.12) 0px 2px 4px 0px, rgba(14, 30, 37, 0.12) 0px 2px 16px 0px',
+        }}
         _active={{}}
-        onClick={() => slider?.slickNext()}>
+        onClick={() => slider?.slickNext()}
+      >
         <BsArrowRightShort fontSize="35px" />
       </IconButton>
       {/* Slider */}
-      <Slider  {...settings} ref={(slider) => setSlider(slider)}>
+      <Slider {...settings} ref={(slider) => setSlider(slider)}>
         {reviewData.map((elem, index) => (
-          <ReviewCarouselCard key={elem.id} elem={elem}/>
+          <ReviewCarouselCard key={elem.id} elem={elem} />
         ))}
       </Slider>
     </Box>

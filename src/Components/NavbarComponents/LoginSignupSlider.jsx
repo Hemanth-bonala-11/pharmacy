@@ -228,6 +228,7 @@ export function LoginSignupSlider() {
                   h="62%"
                   src={tenant.logo}
                 />
+                
               </Flex>
               <Flex
                 align="end"

@@ -7,6 +7,7 @@ const initState={
     isRegistered:false,
     isAuth: false,
     isError: false,
+    user: []
 }
 
 export const AuthReducer= (state= initState, action)=>{
@@ -66,6 +67,14 @@ export const AuthReducer= (state= initState, action)=>{
                         ...state,
                         isLoading: false,
                         isError: true,
+                    }
+                )
+            }
+            case authActions.FETCH_USER_DETAILS: {
+                return(
+                    {
+                        ...state,
+                        user: action.payload
                     }
                 )
             }

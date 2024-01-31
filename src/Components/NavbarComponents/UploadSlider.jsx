@@ -29,10 +29,10 @@ export default function UploadSlider() {
   const isLoggedIn = localStorage.getItem("auth_token");
   const [showLogin, setShowLogin] = useState(!isLoggedIn); // Initially show the slider if not logged in
 
-  useEffect(() => {
-    setShowLogin(!isLoggedIn); // Update showLogin when isLoggedIn changes
-  }, [isLoggedIn]);
-
+  // useEffect(() => {
+  //   setShowLogin(!isLoggedIn); // Update showLogin when isLoggedIn changes
+  // }, [isLoggedIn]);
+  console.log(showLogin,"show login");
   const handleFileChange = (e) => {
     setFile(e.target.files[0]);
   };
@@ -71,7 +71,7 @@ export default function UploadSlider() {
   return (
     <div>
       {/* Upload Section */}
-      {!isLoggedIn && (
+      
         <Box>
           <Text
             transition="all .4s ease"
@@ -88,16 +88,17 @@ export default function UploadSlider() {
             Upload
           </Text>
         </Box>
-      )}
-
+     
       {/* Upload Drawer */}
       <Drawer isOpen={isOpen} placement="right" onClose={() => setIsOpen(false)} size="sm">
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
 
-          {showLogin ? (
+          {!isLoggedIn ? (
+            <>
             <LoginUIComponent />
+            </>
           ) : (
             <>
               <DrawerHeader borderBottomWidth="1px" bg="#0f847e" color="white">

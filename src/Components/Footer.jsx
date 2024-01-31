@@ -1,7 +1,7 @@
 import {
   Box,
   Container,
-  Link,
+  
   SimpleGrid,
   Stack,
   Text,
@@ -17,6 +17,7 @@ import { AiOutlineTwitter } from "react-icons/ai";
 import { FaFacebookF } from "react-icons/fa";
 import { FaYoutube } from "react-icons/fa";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 
 export default function LargeWithLogoCentered() {
@@ -41,32 +42,9 @@ export default function LargeWithLogoCentered() {
                 Company
               </Heading>
               <Link
-                style={{ textDecoration: "none" }}
-                href={"#"}
+                to="/aboutus"
               >
                 About Us
-              </Link>
-              <Stack direction={"row"} align={"center"} spacing={2}>
-                <Link
-                  style={{ textDecoration: "none" }}
-                  href={"#"}
-                >
-                  Careers
-                </Link>
-                <Tag
-                  size={"sm"}
-                  bg={useColorModeValue("green.300", "green.800")}
-                  ml={2}
-                  color={"white"}
-                >
-                  New
-                </Tag>
-              </Stack>
-              <Link
-                style={{ textDecoration: "none" }}
-                href={"#"}
-              >
-                Blog
               </Link>
               <Link
                 style={{ textDecoration: "none" }}
@@ -76,7 +54,7 @@ export default function LargeWithLogoCentered() {
               </Link>
             </Stack>
             {/* ok */}
-            <Stack align={"flex-start"} spacing="6px">
+            {/* <Stack align={"flex-start"} spacing="6px">
               <Heading
                 marginBottom="8px"
                 fontSize="16px"
@@ -103,7 +81,7 @@ export default function LargeWithLogoCentered() {
               >
                 Lab Tests
               </Link>
-            </Stack>
+            </Stack> */}
           </Stack>
           <Stack align={"flex-start"} spacing="6px">
             <Heading

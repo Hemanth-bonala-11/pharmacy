@@ -1,162 +1,115 @@
-import axios from "axios";
-import React, { useEffect, useState, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { authAPI, HomeApi } from "../../api";
+import { useEffect, useState, useRef } from "react";
+import { useDispatch } from "react-redux";
+import { Box, ChakraProvider } from "@chakra-ui/react";
+import { HomeApi } from "../../api";
 import Navbar from "../Navbar";
-// import { actionsCreator } from "../../Redux/actions/actionsCreator";
 import SearchResults from "../SearchResults/SearchResults";
-import "./Navigation";
 import get from "lodash/get";
 
-// const mapStateToProps = ({ auth }) => ({
-//     auth,
-// });
+const Navigation = () => {
+  const dispatch = useDispatch();
+  const [overlayOpen, setOverlayOpen] = useState(false);
+  const [search, setSearch] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [pageNumber, setPageNumber] = useState(1);
+  const [loadMore, setLoadMore] = useState(true);
+  const [showSearchResults, setShowSearchResults] = useState(false);
 
-export default function Navigation() {
-    // const { auth } = useSelector(mapStateToProps);
-    // const { showLoginPopup = false, isLoggedIn = false } = auth;
-    const dispatch = useDispatch();
-    const [overlayOpen, setoverlayOpen] = useState(false);
-    const loginstatesetter = () => {
-        // dispatch(actionsCreator.SHOW_LOGIN());
-    };
+  const searchTermHandler = (term) => {
+    setSearch(term);
+  };
 
-    const removeLoginPopup = () => {
-        // dispatch(actionsCreator.SET_LOGIN({ showLoginPopup: false }));
-        setoverlayOpen(false);
-        setsearchResults([]);
-    };
+  const scrollToEnd = () => {
+    setPageNumber((prevPage) => prevPage + 1);
+  };
 
-    const [search, setsearch] = useState("");
-    const [searchResults, setsearchResults] = useState([]);
-    const [pageNumber, setpageNumber] = useState(1);
-    const [userDetails, setUserDetails] = useState({});
-    const [loadMore, setloadMore] = useState(true);
-    const [showSearchResults, setshowSearchResults] = useState(false);
-    const searchTermHandler = (term) => {
-        setsearch(term);
-    };
-
-    const scrollToEnd = () => {
-        setpageNumber(pageNumber + 1);
-    };
-
-    useEffect(() => {
-        // dispatch(actionsCreator.FETCH_TENANT_DETAILS())
-
-        if (localStorage.getItem("auth_token")) {
-            fetchUserDetails();
-        }
-        window.addEventListener("logout_user", logoutUser);
-        return () => {
-            window.removeEventListener("logout_user", logoutUser);
-        };
-        
-    }, []);
-
- 
-
-
-
-    const logoutUser = () => {
-        // dispatch(actionsCreator.LOGOUT_USER());
-        setTimeout(() => {
-            window.location.reload();
-        }, 2000);
-    };
-    const fetchSearchResults = async () => {
-        try {
-            const response = await HomeApi.sellableProductSearch({
-                search: search,
-                page: pageNumber,
-            });
-            const resData = get(response, "data.results");
-            if (pageNumber === 1) setsearchResults(resData);
-            else setsearchResults([...searchResults, ...resData]);
-            setoverlayOpen(true);
-        } catch (error) {
-            setloadMore(false);
-        }
-    };
-    const bodyVar = document.querySelector("body");
-
-    useEffect(() => {
-        if (search !== "") {
-            setshowSearchResults(true);
-            fetchSearchResults();
-            // bodyVar.style.overflow('hidden')
-        } else {
-            setsearchResults([]);
-            setoverlayOpen(false);
-            setpageNumber(1);
-            setloadMore(true);
-        }
-    }, [search, pageNumber]);
-
-    useEffect(() => {
-        setpageNumber(1);
-        setloadMore(true);
-    }, [search]);
-
-    //click outside to close function
-    function useOutsideAlerter(ref) {
-        useEffect(() => {
-            function handleClickOutside(event) {
-                if (ref.current && !ref.current.contains(event.target)) {
-                    setoverlayOpen(false);
-                    setsearchResults([]);
-                    setshowSearchResults(false);
-                }
-            }
-
-            document.addEventListener("mousedown", handleClickOutside);
-            return () => {
-                document.removeEventListener("mousedown", handleClickOutside);
-            };
-        }, [ref]);
+  const fetchSearchResults = async () => {
+    try {
+      const response = await HomeApi.sellableProductSearch({
+        search: search,
+        page: pageNumber,
+      });
+      const resData = get(response, "data.results");
+      if (pageNumber === 1) setSearchResults(resData);
+      else setSearchResults([...searchResults, ...resData]);
+      setOverlayOpen(true);
+    } catch (error) {
+      setLoadMore(false);
     }
+  };
 
-    const searchRef = useRef();
-    useOutsideAlerter(searchRef);
+  const searchRef = useRef();
 
-    const fetchUserDetails = async () => {
-        // dispatch(actionsCreator.FETCH_USER_DETAILS());
-    };
+  useEffect(() => {
+    if (search !== "") {
+      setShowSearchResults(true);
+      fetchSearchResults();
+    } else {
+      setSearchResults([]);
+      setOverlayOpen(false);
+      setPageNumber(1);
+      setLoadMore(true);
+    }
+  }, [search, pageNumber]);
 
+  useEffect(() => {
+    setPageNumber(1);
+    setLoadMore(true);
+  }, [search]);
+
+  const useOutsideAlerter = (ref) => {
     useEffect(() => {
-        if (overlayOpen === true) {
-            document.querySelector("body").style.overflow = "hidden";
-        } else {
-            document.querySelector("body").style.overflow = "auto";
-            if (document.querySelector(".navbar-search"))
-                document.querySelector(".navbar-search").value = "";
+      const handleClickOutside = (event) => {
+        if (ref.current && !ref.current.contains(event.target)) {
+          setOverlayOpen(false);
+          setSearchResults([]);
+          setShowSearchResults(false);
         }
-    }, [overlayOpen]);
+      };
 
-    return (
-        <>
-            <Navbar
-                clickfunc={loginstatesetter}
-                removeLoginPopup={removeLoginPopup}
-                search={searchTermHandler}
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+        document.removeEventListener("mousedown", handleClickOutside);
+      };
+    }, [ref]);
+  };
+
+  const fetchUserDetails = async () => {
+    // dispatch(actionsCreator.FETCH_USER_DETAILS());
+  };
+
+  useEffect(() => {
+    if (overlayOpen === true) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "auto";
+      if (document.querySelector(".navbar-search"))
+        document.querySelector(".navbar-search").value = "";
+    }
+  }, [overlayOpen]);
+
+  const outsideAlerterRef = useRef();
+  useOutsideAlerter(outsideAlerterRef);
+
+  return (
+    <ChakraProvider>
+      <Box>
+        <Navbar clickfunc={() => {}} removeLoginPopup={() => {}} search={searchTermHandler} />
+        {search !== "" && showSearchResults ? (
+          <Box ref={outsideAlerterRef}>
+            <SearchResults
+              fetchMoreItems={() => scrollToEnd()}
+              data={searchResults || []}
+              loadMore={loadMore}
+              overlayHandler={setOverlayOpen}
+              resultsHandler={setShowSearchResults}
+              searchTerm={search}
             />
+          </Box>
+        ) : null}
+      </Box>
+    </ChakraProvider>
+  );
+};
 
-            {search !== "" && showSearchResults ? (
-                <div ref={searchRef}>
-                    <SearchResults
-                        fetchMoreItems={() => scrollToEnd()}
-                        data={searchResults || []}
-                        loadMore={loadMore}
-                        overlayHandler={setoverlayOpen}
-                        resultsHandler={setshowSearchResults}
-                        searchTerm={search}
-                    />
-                </div>
-            ) : null}
-            
-            {/* {showLoginPopup || overlayOpen ? (
-                <Overlay clickfunc={removeLoginPopup} />
-            ) : null} */}
-        </>
-    );
-}
+export default Navigation;

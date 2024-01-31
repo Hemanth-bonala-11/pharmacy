@@ -13,7 +13,8 @@ export const authActions={
 
     GET_AUTH_REQUEST: 'GET_AUTH_REQUEST',
     GET_AUTH_SUCCESS: 'GET_AUTH_SUCCESS',
-    GET_AUTH_FAILURE: 'GET_AUTH_FAILURE'
+    GET_AUTH_FAILURE: 'GET_AUTH_FAILURE',
+    FETCH_USER_DETAILS: 'FETCH_USER_DETAILS'
 }
 
 //POST Actions
@@ -121,5 +122,12 @@ export const getAuthSuccess=(data)=> {
 export const getAuthFailure=()=> {
     return {
         type: authActions.GET_AUTH_FAILURE,
+    }
+}
+
+export const fetchUser = (data)=>{
+    return {
+        type: authActions.FETCH_USER_DETAILS,
+        payload: data
     }
 }

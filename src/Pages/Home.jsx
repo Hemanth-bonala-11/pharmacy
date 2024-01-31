@@ -51,7 +51,7 @@ const Home = () => {
         <div className="Content" style={{overflowX:"hidden", height:"100%" ,padding:"50px", position:"relative"}}>
             <HomeCatagoryCards />
             {/* <PharmEasyPlusBanner/> */}
-            <OffersCarousels/>
+            {/* <OffersCarousels/> */}
             
             {/* <BrandsCarousel/> */}
             {
@@ -59,9 +59,9 @@ const Home = () => {
                 return category.home_page && (
                   index%2===0?(
                     <LabTestCarousal category={category}/>
-                  ):(
-                    <DealsOfTheDayCarousel category={category}/>
-                  )
+                  ):null
+                    
+                  
                 )
               })
             }

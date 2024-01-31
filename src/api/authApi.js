@@ -29,3 +29,10 @@ export const login = (data) => {
     const payload = { ...data };
     return requestMaker(url, 'post', { params, payload });
 };
+
+export const fetchUserDetails = (data) => {
+    const url = `/account/userprofile/`;
+    const params = {};
+    const payload = {};
+    return requestMaker(url, 'get', { params, payload });
+};

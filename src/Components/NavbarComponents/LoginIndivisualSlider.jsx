@@ -45,6 +45,7 @@ export default function LoginIndivisualSlider({ handleRegister, color, font }) {
   const dispatch = useDispatch();
   const loginSuccess = (response)=>{
     storeToken(response.data.token.access)
+    window.location.reload();
   }
   const handleLogin = async () => {
     if (!phone_number || !password) {

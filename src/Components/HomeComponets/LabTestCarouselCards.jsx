@@ -1,76 +1,64 @@
 import React, { useState } from "react";
 import { Box, Center, Flex, Image, Stack, Text, useColorModeValue } from "@chakra-ui/react";
 import { FiChevronRight } from "react-icons/fi";
-import {add_to_cart} from '../../api/cartApi'
+import { add_to_cart } from '../../api/cartApi'
 
 export default function LabTestCarousalCards({ elem }) {
-  console.log(elem)
   const isLoggedIn = localStorage.getItem("auth_token")
   const [isUserLoggedIn, setIsUserLoggedIn] = useState(isLoggedIn);
-  
+
   const handleAddToCart = () => {
     if (isLoggedIn) {
-   
       sendToBackend();
     } else {
-     
       storeInLocalStorage();
     }
   };
 
   const storeInLocalStorage = () => {
     const existingCartData = JSON.parse(localStorage.getItem("cart")) || [];
-  
- 
+
     const existingProductIndex = existingCartData.findIndex(item => item.product_id === elem.product_id);
-  
+
     if (existingProductIndex !== -1) {
-  
       existingCartData[existingProductIndex].quantity += 1;
     } else {
- 
       existingCartData.push({
         product_id: elem.product_id,
         product_name: elem.product_name,
         quantity: 1,
       });
     }
-  
+
     localStorage.setItem("cart", JSON.stringify(existingCartData));
-  
+
     console.log("Product added to local storage!");
   };
-  
 
   const sendToBackend = () => {
-   
     const cartData = JSON.parse(localStorage.getItem("cart")) || [];
-  
-   
+
     let payload = cartData.map(item => ({ id: item.id, quantity: item.quantity }));
-    if(payload.length===0){
-    payload = {items: [{ product: elem.id, quantity: elem.quantity || 1 }]}  
+    if (payload.length === 0) {
+      console.log(elem,"elem")
+      payload = { items: [{ product: elem.id, quantity: elem.quantity || 1 }] }
     }
-  
+
     add_to_cart(payload)
       .then(response => {
         if (!response.ok) {
-          
+          // Handle error
         }
-        return response.json();
+        
       })
       .then(data => {
-        
         console.log("Cart data sent to backend!");
-     
         localStorage.removeItem("cart");
       })
       .catch(error => {
-      
         console.error("Error sending cart data to backend:", error);
       });
   };
-  
 
   return (
     <Center height={"15rem"} marginX="8px">
@@ -97,15 +85,13 @@ export default function LabTestCarousalCards({ elem }) {
           borderRadius="8px"
           overflow="hidden"
         >
-          <Flex w="25%" align="center">
-            <Image
-              objectFit="cover"
-              w="90%"
-              h="90%"
-              src={elem.photo}
-            />
+          {/* 1/3 Section for Image */}
+          <Flex w="100%" h="65%">
+            <Image objectFit="cover" w="100%" h="100%" src={elem.photo} />
           </Flex>
-          <Flex direction="column" w="100%" px="8px" h="45%" color="#4f585e">
+
+          {/* 1/3 Section for Text */}
+          <Flex direction="column" w="100%" h="33%" px="8px" color="#4f585e">
             <Text
               fontSize="15px"
               fontWeight="600"
@@ -132,10 +118,12 @@ export default function LabTestCarousalCards({ elem }) {
               {elem.tests}{" "}
             </Text>
           </Flex>
+
+          {/* 1/3 Section for Add to Cart Button */}
           <Flex
             bottom="0"
             w="100%"
-            h="30%"
+            h="33%"
             justify="space-between"
             align="center"
           >
@@ -159,9 +147,9 @@ export default function LabTestCarousalCards({ elem }) {
               justify="center"
               className="bookNow"
               _hover={{
-                bg:"#0f847e",
-                color:"white",
-                transition:"all 0.4s ease"
+                bg: "#0f847e",
+                color: "white",
+                transition: "all 0.4s ease",
               }}
               onClick={handleAddToCart}
             >

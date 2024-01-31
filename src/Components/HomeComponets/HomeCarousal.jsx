@@ -30,20 +30,16 @@ export default function HomeCarousal() {
   const navigate = useNavigate()
 
   const top = useBreakpointValue({ base: '90%', md: '50%' });
-  console.log(offers,"offers");
-
-
-  
-
 
   return (
     <Box
       position={'relative'}
-      height={'260px'}
+      height={['200px', '260px']}
       width={'full'}
       overflow={'hidden'}
       borderRadius="0"
-        zIndex="0">
+      zIndex="0"
+    >
       {/* CSS files for react-slick */}
       <link
         rel="stylesheet"
@@ -63,17 +59,18 @@ export default function HomeCarousal() {
         position="absolute"
         left={0}
         top={top}
-        transform={'translate(0%, -50%)'}
+        transform={['translate(0%, -50%)', 'translate(0%, -50%)']}
         zIndex={2}
         color="white"
-        paddingRight="5rem"
+        paddingRight="1rem"
         height="100%"
         borderRadius="0"
-        bg=" linear-gradient(-90deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5))"
-        _hover={{bg:" linear-gradient(-90deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5))"}}
-        _active={{bg:" linear-gradient(-90deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5))"}}
-        onClick={() => slider?.slickPrev()}>
-        <ChevronLeftIcon fontSize="60px" />
+        bg={['linear-gradient(-90deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5))', 'linear-gradient(-90deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5))']}
+        _hover={{ bg: ['linear-gradient(-90deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5))', 'linear-gradient(-90deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5))'] }}
+        _active={{ bg: ['linear-gradient(-90deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5))', 'linear-gradient(-90deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5))'] }}
+        onClick={() => slider?.slickPrev()}
+      >
+        <ChevronLeftIcon fontSize={['30px', '60px']} />
       </IconButton>
       {/* Right Icon */}
       <IconButton
@@ -83,24 +80,25 @@ export default function HomeCarousal() {
         borderRadius="0"
         right={0}
         top={top}
-        transform={'translate(0%, -50%)'}
+        transform={['translate(0%, -50%)', 'translate(0%, -50%)']}
         zIndex={2}
         color="white"
-        paddingLeft="5rem"
+        paddingLeft="1rem"
         height="100%"
-        bg=" linear-gradient(90deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5))"
-        _hover={{bg:" linear-gradient(90deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5))"}}
-        _active={{bg:" linear-gradient(90deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5))"}}
-        onClick={() => slider?.slickNext()}>
-        <ChevronRightIcon fontSize="60px" />
+        bg={['linear-gradient(90deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5))', 'linear-gradient(90deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5))']}
+        _hover={{ bg: ['linear-gradient(90deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5))', 'linear-gradient(90deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5))'] }}
+        _active={{ bg: ['linear-gradient(90deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5))', 'linear-gradient(90deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.5))'] }}
+        onClick={() => slider?.slickNext()}
+      >
+        <ChevronRightIcon fontSize={['30px', '60px']} />
       </IconButton>
       {/* Slider */}
       <Slider {...settings} ref={(slider) => setSlider(slider)}>
         {offers && offers.length!==0 && offers.map((offer, index) => (
           <Box
-            onClick={()=>{navigate(offer.action_link)}}
+            onClick={() => { navigate(offer.action_link) }}
             key={index}
-            height={"260px"}
+            height={['200px', '260px']}
             position="relative"
             backgroundPosition="center"
             backgroundRepeat="no-repeat"

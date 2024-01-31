@@ -11,6 +11,7 @@ import ErrorComponents from '../Components/ErrorComponents'
 import UploadSlider from '../Components/NavbarComponents/UploadSlider'
 import Login from '../Components/NavbarComponents/LoginIndivisualSlider'
 import Navigation from '../Components/Navigation/Navigation'
+import AboutUs from '../Components/Navigation/AboutUs'
 
 const AllRoutes = () => {
   return (
@@ -24,6 +25,7 @@ const AllRoutes = () => {
             <Route path="/healthcare/products" element={<Products/>}/>
             <Route path="/healthcare/products/:id" element={<IndivisualProduct/>}/>
             <Route path="/cart" element={<Cart/>}/>
+            <Route path="/aboutus" element={<AboutUs/>}/>
             <Route path="/categories/:category" element={<AllCatagory/>}/>
             <Route  path="*" element={<ErrorComponents />} />
         </Routes>

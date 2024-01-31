@@ -33,11 +33,16 @@ import UploadSlider from "../Components/NavbarComponents/UploadSlider.jsx"; // I
 import { fetchTenant } from "../Redux/Company/action.js";
 import { fetchTenantDetails } from "../api/HomeAPi.js";
 import { debounce } from "../utils/deboundeUtil.js";
+import { fetchUserDetails } from "../api/authApi.js";
+import { fetchUser } from "../Redux/Auth/action.js";
+import { useToast } from "@chakra-ui/react";
 
 const Navbar = (props) => {
   const { isOpen, onToggle } = useDisclosure();
   const { isOpen: isUploadOpen, onOpen: onUploadOpen, onClose: onUploadClose } = useDisclosure();
   const tenant = useSelector((store)=>store.tenant.details)
+  const user = useSelector((store)=>store.auth.user)
+  const toast= useToast()
 
   const [nav, setNav] = useState(false);
 
@@ -55,7 +60,28 @@ const Navbar = (props) => {
       setNav(true);
     }
   }
-
+  const [userDetails, setUserDetails ] = useState([])
+  const fetchuserToRedux = async ()=>{
+    const response = await fetchUserDetails()
+    setUserDetails(response.data)
+    dispatch(fetchUser(response.data))
+  }
+  useEffect(()=>{
+    if(isLoggedIn){
+      fetchuserToRedux()
+    }
+  },[])
+  const logoutHandler=() => {
+    localStorage.removeItem("auth_token");
+    toast({
+      title: 'logged out successfully',
+      status: "error",
+      duration: 2000,
+      isClosable: true,
+    });
+    window.location.reload()
+    
+  }
   const isAuth = useSelector((store) => store.auth.isAuth);
   console.log(isAuth, "isauth");
   const userId = useSelector((store) => store.auth.id);
@@ -117,9 +143,9 @@ const Navbar = (props) => {
           <Box height="100%" w="100%">
             <Box display={{ base: "none", md: "flex" }} ml={10} height="50%">
               <Flex className="Searchbox" height="100%" w="77%" align="center">
-                <HStack className="pincode" w="18%" height="99.8%" fontWeight="400">
+                {/* <HStack className="pincode" w="18%" height="99.8%" fontWeight="400">
                   <PincodeSlider />
-                </HStack>
+                </HStack> */}
                 <Input
                   className="searchInput"
                   w="56%"
@@ -146,8 +172,12 @@ const Navbar = (props) => {
                   
                     {/* <Button w="100%" height="100%" color="green">
                       UPLOAD
+
                     </Button> */}
-                 <UploadSlider/>
+                    {
+                      isLoggedIn ?<UploadSlider/> :(null)
+                    }
+                
                 
               </Flex>
               { (
@@ -155,8 +185,8 @@ const Navbar = (props) => {
                   <Flex>
                     <Image src="https://assets.pharmeasy.in/web-assets/dist/5eb42971.svg" />
                     {
-                      isLoggedIn?(
-                        <div>continue</div>
+                      user?.length!==0 ?(
+                        <div color="white">{user?.data?.name}</div>
                       ):(
                         <LoginSignupSlider />
                       )
@@ -173,6 +203,13 @@ const Navbar = (props) => {
                       </Center>
                     </Flex>
                   </Link>
+                  {
+                    isLoggedIn?
+                    <Button onClick={logoutHandler}>
+                    Logout
+                  </Button>
+                  :(null)
+                  }
                 </HStack>
               )}
             </Box>
